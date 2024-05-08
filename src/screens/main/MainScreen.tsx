@@ -8,8 +8,10 @@ import CurrencyComponent from '../../components/Currency/CurrencyComponent';
 import {appColors} from '../../constants/appColors';
 import useKeyboardVisibility from '../../hooks/useKeyboardVisibility';
 import {appInfo} from '../../constants/appInfos';
+import { useNavigation } from '@react-navigation/native';
 const {width,height}=Dimensions.get('window');
-const MainScreen = ({navigation}: any) => {
+const MainScreen = () => {
+  const navigation = useNavigation();
   const {currentFeature, setCurrentFeature,somwidth,setSomwidth} = useFeatureContext();
   const isKeyboardVisible = useKeyboardVisibility();
   useEffect(() => {

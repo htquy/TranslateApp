@@ -1,8 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, TouchableOpacity, Text, Dimensions } from 'react-native';
 import Icon  from 'react-native-vector-icons/MaterialIcons';
 import axios from 'axios';
-const {width,height}=Dimensions.get('window');
+import { appSize } from '../../constants/appSize';
+import { useHeaderHeight } from '@react-navigation/elements';
+const {width,height}={width:appSize.sizes.WIDTH,height:appSize.sizes.HEIGHT-appSize.sizes.UNSAFETOP}
 interface NumBoardProps{
   currency1:string;
   currency2:string;
@@ -14,12 +16,20 @@ interface NumBoardProps{
   setResult2:React.Dispatch<React.SetStateAction<string>>;
 }
 const NumBoard:React.FC<NumBoardProps> = ({currency1,currency2,setCurrency1,setCurrency2,result1,result2,setResult1,setResult2}) => {
-  
-  const board = [[['C','#FFC9C9','#CD1F20'], ['<-','#FFC9C9','#CD1F20','arrow-back-sharp'], ['||','#FFC9C9','#CD1F20','swap-horizontal-outline'], ['\u00F7','#CD1F20','#FFFFFF']],
+  const headerHeight = useHeaderHeight();
+  console.log(headerHeight);
+  const[heightBoard,setHeightBoard]=useState(0);
+  const board = [[['C','#FFC9C9','#CD1F20'], ['<-','#FFC9C9','#CD1F20','arrow-back'], ['||','#FFC9C9','#CD1F20','compare-arrows'], ['\u00F7','#CD1F20','#FFFFFF']],
                  [['7','#F4F4F4','#656565'], ['8','#F4F4F4','#656565'], ['9','#F4F4F4','#656565'], ['x',"#CD1F20",'#FFFFFF']], 
                  [['4','#F4F4F4','#656565'], ['5','#F4F4F4','#656565'], ['6','#F4F4F4','#656565'], ['+',"#CD1F20",'#FFFFFF']], 
                  [['1','#F4F4F4','#656565'], ['2','#F4F4F4','#656565'], ['3','#F4F4F4','#656565'], ['-','#CD1F20','#FFFFFF']], 
                  [['0','#F4F4F4','#656565'], ['.','#F4F4F4','#656565'], ['%','#F4F4F4','#656565'], ['=','#CD1F20','#FFFFFF']]];
+  var boardh=500;
+ if (appSize.sizes.HEIGHT-headerHeight-0.4*width-0.07*height>=1.2*width){
+  boardh=1.2*width;
+  console.log("width",width)
+ }
+ else boardh=appSize.sizes.HEIGHT-headerHeight-0.4*width-0.07*height;
   const handleButton=(item:string)=>{
     if(item=='C'){
       setResult1('');
@@ -63,18 +73,20 @@ const NumBoard:React.FC<NumBoardProps> = ({currency1,currency2,setCurrency1,setC
     ConvertAPI(result1);
   },[currency1,currency2])
   return (
-    <View style={{ height:width*1.2,width:'100%',top:0.08*width }}>
+    <>
+    {console.log(boardh)}
+    <View style={{ height:boardh,width:boardh*0.8,marginTop:0.08*width }}>
       {
         board.map((items, index) => (
-          <View key={index} style={{ justifyContent: 'center', alignItems: 'center', flex: 1,flexDirection:'row',height:'25%' }}>
+          <View key={index} style={{ justifyContent: 'center', alignItems: 'center', flex: 1,flexDirection:'row',height:0.8*boardh }}>
             {
               items.map((i, innerIndex) => (
-                <View key={innerIndex} style={{ justifyContent: 'center', alignItems: 'center', height: width*0.25, width: '25%' }}>
-                  <TouchableOpacity style={{ width: '88%', height: '88%',justifyContent:'center',alignItems:'center', backgroundColor:i[1],borderRadius:width*0.05 }}
+                <View key={innerIndex} style={{ justifyContent: 'center', alignItems: 'center', height: boardh*0.2, width: boardh*0.2 }}>
+                  <TouchableOpacity style={{ width: 0.18*boardh, height: 0.18*boardh,justifyContent:'center',alignItems:'center', backgroundColor:i[1],borderRadius:width*0.05 }}
                   onPress={()=>handleButton(i[0])}
                   >
                     {i[3]!=null?
-                    (i[0]=='||'?<View style={{transform: [{ rotate: '90deg' }],}}><Icon name={i[3]} size={28} color={i[2]}/></View>:
+                    (i[0]=='||'?<View style={{transform: [{ rotate: '90deg' }],}}><Icon name={i[3]} size={38} color={i[2]}/></View>:
                     <Icon name={i[3]} size={28} color={i[2]}/>):
                     <Text style={{fontSize:28, color:i[2]}}>{i[0]}</Text>}
                   </TouchableOpacity>
@@ -85,6 +97,7 @@ const NumBoard:React.FC<NumBoardProps> = ({currency1,currency2,setCurrency1,setC
         ))
       }
     </View>
+    </>
   );
 };
 

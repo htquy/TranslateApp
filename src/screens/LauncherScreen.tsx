@@ -2,8 +2,9 @@ import {View, Text, TouchableOpacity, Dimensions} from 'react-native';
 import React, { useState } from 'react';
 import {appColors} from '../constants/appColors';
 import {useFeatureContext} from '../context/FeatureContext';
-const {width,height}=Dimensions.get('window');
-const HomeScreen = ({navigation}: any) => {
+import { appSize } from '../constants/appSize';
+const {width,height}={width:appSize.sizes.WIDTH,height:appSize.sizes.HEIGHT-appSize.sizes.UNSAFETOP}
+const LauncherScreen = ({navigation}:any) => {
   const {currentFeature, setCurrentFeature,somwidth,setSomwidth} = useFeatureContext();
   const goToMain = (id: number,sizewidth:number) => {
     setSomwidth(height*sizewidth);
@@ -46,4 +47,4 @@ const HomeScreen = ({navigation}: any) => {
   );
 };
 
-export default HomeScreen;
+export default  LauncherScreen;
