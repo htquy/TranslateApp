@@ -1,5 +1,5 @@
-import {ScrollView, View} from 'react-native';
-import React, {useEffect} from 'react';
+import {Dimensions, ScrollView, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import styles from './MainScreen.style';
 import SwitchButton from '../../components/SwitchButton';
 import {useFeatureContext} from '../../context/FeatureContext';
@@ -8,9 +8,9 @@ import CurrencyComponent from '../../components/Currency/CurrencyComponent';
 import {appColors} from '../../constants/appColors';
 import useKeyboardVisibility from '../../hooks/useKeyboardVisibility';
 import {appInfo} from '../../constants/appInfos';
-
+const {width,height}=Dimensions.get('window');
 const MainScreen = ({navigation}: any) => {
-  const {currentFeature, setCurrentFeature} = useFeatureContext();
+  const {currentFeature, setCurrentFeature,somwidth,setSomwidth} = useFeatureContext();
   const isKeyboardVisible = useKeyboardVisibility();
   useEffect(() => {
     navigation.setOptions({
@@ -51,7 +51,7 @@ const MainScreen = ({navigation}: any) => {
         )}
         {!isKeyboardVisible && (
           <View style={styles.footer}>
-            <SwitchButton />
+            <SwitchButton somwidth={somwidth} setSomwidth={setSomwidth}/>
           </View>
         )}
       </ScrollView>

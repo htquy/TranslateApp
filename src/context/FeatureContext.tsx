@@ -8,6 +8,8 @@ interface Feature {
 interface FeatureContextType {
   currentFeature: Feature;
   setCurrentFeature: React.Dispatch<React.SetStateAction<Feature>>;
+  somwidth:number;
+  setSomwidth:React.Dispatch<React.SetStateAction<number>>;
 }
 
 const FeatureContext = createContext<FeatureContextType | undefined>(undefined);
@@ -17,9 +19,9 @@ export const FeatureProvider = ({children}: any) => {
     id: 1,
     title: 'Translate',
   });
-
+  const [somwidth,setSomwidth]=useState<number>(0);
   return (
-    <FeatureContext.Provider value={{currentFeature, setCurrentFeature}}>
+    <FeatureContext.Provider value={{currentFeature, setCurrentFeature,somwidth,setSomwidth}}>
       {children}
     </FeatureContext.Provider>
   );

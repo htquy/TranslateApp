@@ -58,4 +58,5 @@ export const styles = StyleSheet.create({
   },
 
   voiceButton: {},
+  actionButton:{}
 });

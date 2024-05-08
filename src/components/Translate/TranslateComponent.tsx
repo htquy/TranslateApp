@@ -1,5 +1,5 @@
 import {View, Text, TouchableOpacity, TextInput, Keyboard} from 'react-native';
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Clipboard from '@react-native-clipboard/clipboard';
 import LanguagePickerButton from './LanguagePickerButton';
 import {styles} from './Translate.Style';
@@ -15,9 +15,11 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import VoiceButton from './VoiceButtonComponent';
 import VoiceButtonComponent from './VoiceButtonComponent';
+import axios from 'axios';
 
 const TranslateComponent = ({navigation, isKeyboardVisible}: any) => {
   const [textToTranslate, setTextToTranslate] = useState('');
+  const [textFromTranslate,setTextFromTranslate]=useState('');
   const [isRecording, setIsRecording] = useState(false);
   const textInputRef = useRef(null);
   const {
@@ -45,8 +47,37 @@ const TranslateComponent = ({navigation, isKeyboardVisible}: any) => {
   const handleSwitchLanguage = () => {
     setSourceLanguage(targetLanguage);
     setTargetLanguage(sourceLanguage);
+    setTextFromTranslate(textToTranslate);
+    setTextToTranslate(textFromTranslate);
   };
+  const handleTranslate = async (text:string) => {
+    console.log(text);
+    const postData = {
+      contents: text,
+      contTargetLanguageCode: targetLanguage.code,
+      sourceLanguageCode: sourceLanguage.code,
+    };
 
+    const fetchApi = async () => {
+      try {
+        console.log(postData);
+        const url = `http://103.101.161.178:123/api/v1/translate`;
+        var res = await axios.post(url, postData);
+        setTextFromTranslate(res.data.translatedText);
+        console.log(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    const response = await fetchApi();
+  console.log(response);
+  };
+  useEffect(() => {
+    const fetchData = async () => {
+        await handleTranslate(textToTranslate);
+    };
+    fetchData();
+  }, [textToTranslate,targetLanguage]);
   return (
     <View style={{flex: 1, padding: 16}}>
       <View style={styles.languagePicker}>
@@ -60,7 +91,7 @@ const TranslateComponent = ({navigation, isKeyboardVisible}: any) => {
           }}
         />
         <TouchableOpacity onPress={() => handleSwitchLanguage()}>
-          <ArrowImage color={appColors.black} width={24} height={24} />
+          <ArrowImage color={appColors.black} width={24} height={24}/>
         </TouchableOpacity>
         <LanguagePickerButton
           name={targetLanguage.name}
@@ -109,10 +140,10 @@ const TranslateComponent = ({navigation, isKeyboardVisible}: any) => {
           <View style={styles.textArea}>
             <TextInput
               style={styles.text}
-              value={textToTranslate}
+              value={textFromTranslate}
               ref={textInputRef}
-              onChangeText={value => setTextToTranslate(value)}
-              placeholder="Enter text..."
+              // onChangeText={value => setTextToTranslate(value)}
+              //placeholder="Enter text..."
               placeholderTextColor={appColors.gray2}
               multiline={true}
               textAlignVertical="top"
@@ -128,31 +159,34 @@ const TranslateComponent = ({navigation, isKeyboardVisible}: any) => {
             {justifyContent: isRecording ? 'center' : 'space-between'},
           ]}>
           {!isRecording && (
-            <View style={{alignItems: 'center', width: 80}}>
+            <View style={{alignItems: 'center', width: 80,bottom:10}}>
               <TouchableOpacity
                 style={styles.actionButton}
-                onPress={() => textInputRef.current.focus()}>
+                onPress={() => {}}>
                 <HandwriteImage
                   color={appColors.primary}
                   width={28}
                   height={28}
                 />
               </TouchableOpacity>
-              <Text>Handwrite</Text>
+              <Text style={{color:"#CD1F20",fontSize:12}}>Handwrite</Text>
             </View>
           )}
 
           <VoiceButtonComponent
             isRecording={isRecording}
             setIsRecording={setIsRecording}
+            textToTranslate={textToTranslate}
+            setTexToTranslate={setTextToTranslate}
+            sourceLanguage={sourceLanguage}
           />
 
           {!isRecording && (
-            <View style={{alignItems: 'center', width: 80}}>
+            <View style={{alignItems: 'center', width: 80,bottom:10}}>
               <TouchableOpacity style={styles.actionButton} onPress={() => {}}>
                 <UploadImage color={appColors.primary} width={28} height={28} />
               </TouchableOpacity>
-              <Text>Upload</Text>
+              <Text style={{color:"#CD1F20",fontSize:12}}>Upload</Text>
             </View>
           )}
         </View>

@@ -11,6 +11,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     position: 'absolute',
+    alignItems:'center',
     bottom: 0,
     paddingVertical: 20,
     display: 'flex',

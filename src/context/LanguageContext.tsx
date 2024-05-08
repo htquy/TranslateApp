@@ -20,12 +20,12 @@ const LanguageContext = createContext<LanguageContextType | undefined>(
 
 export const LanguageProvider = ({children}: any) => {
   const [sourceLanguage, setSourceLanguage] = useState<LanguageProps>({
-    name: 'Vietnamese',
-    code: 'vi',
-  });
-  const [targetLanguage, setTargetLanguage] = useState<LanguageProps>({
     name: 'English',
     code: 'en',
+  });
+  const [targetLanguage, setTargetLanguage] = useState<LanguageProps>({
+    name: 'Vietnamese',
+    code: 'vi',
   });
   const [isSourceLanguage, setIsSourceLanguage] = useState<boolean>(true);
 

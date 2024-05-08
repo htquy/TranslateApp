@@ -1,11 +1,12 @@
-import {View, Text, TouchableOpacity} from 'react-native';
-import React from 'react';
+import {View, Text, TouchableOpacity, Dimensions} from 'react-native';
+import React, { useState } from 'react';
 import {appColors} from '../constants/appColors';
 import {useFeatureContext} from '../context/FeatureContext';
-
+const {width,height}=Dimensions.get('window');
 const HomeScreen = ({navigation}: any) => {
-  const {currentFeature, setCurrentFeature} = useFeatureContext();
-  const goToMain = (id: number) => {
+  const {currentFeature, setCurrentFeature,somwidth,setSomwidth} = useFeatureContext();
+  const goToMain = (id: number,sizewidth:number) => {
+    setSomwidth(height*sizewidth);
     if (id === 1) {
       setCurrentFeature({id: 1, title: 'Translate'});
     } else setCurrentFeature({id: 2, title: 'Currency'});
@@ -28,7 +29,7 @@ const HomeScreen = ({navigation}: any) => {
           justifyContent: 'center',
           marginBottom: 10,
         }}
-        onPress={() => goToMain(1)}>
+        onPress={() => goToMain(1,0.35)}>
         <Text style={{color: '#fff', textAlign: 'center'}}>Translate</Text>
       </TouchableOpacity>
       <TouchableOpacity
@@ -38,7 +39,7 @@ const HomeScreen = ({navigation}: any) => {
           width: 200,
           justifyContent: 'center',
         }}
-        onPress={() => goToMain(2)}>
+        onPress={() => goToMain(2,0.052)}>
         <Text style={{color: '#fff', textAlign: 'center'}}>Currency</Text>
       </TouchableOpacity>
     </View>

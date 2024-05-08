@@ -73,6 +73,7 @@ const LanguagePickerScreen = () => {
             placeholder="Seach Language"
             value={searchKeyWord}
             onChangeText={value => handleSearch(value)}
+            style={{color:'black'}}
           />
         </View>
         {searchKeyWord ? (

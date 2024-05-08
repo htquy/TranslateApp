@@ -37,6 +37,11 @@ const styles = StyleSheet.create({
     borderColor: appColors.gray5,
     borderBottomWidth: 1,
   },
+  countryItem: {
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: 'gray',
+},
 });
 
 export default styles;

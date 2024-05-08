@@ -1,56 +1,52 @@
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Pressable,
-  FlatList,
-  TextInput,
-} from 'react-native';
-import React, {useState} from 'react';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import {useNavigation} from '@react-navigation/native';
-import styles from './CurrencyPickerScreen.style';
-import {appColors} from '../../constants/appColors';
-import {useCurrencyContext} from '../../context/CurrencyContext';
-import CurrencyData from '../../utils/JsonData/currency-flags.json';
-
-interface CurrencyProps {
-  name: string;
+import { ScrollView, TouchableOpacity, View, StyleSheet, Text,TextInput,FlatList, Dimensions } from "react-native";
+import currencys from '../../utils/JsonData/Currency.json'
+import React,{useState,useEffect} from "react";
+import styles from "./CurrencyPickerScreen.style";
+import CountryFlag from "react-native-country-flag";
+import Icon  from "react-native-vector-icons/MaterialIcons";
+import { appColors } from "../../constants/appColors";
+const {width,height}=Dimensions.get('window');
+interface CurrencyInfo {
+  currencyCode: string;
+  currencyName: string;
   symbol: string;
-  code: string;
-  emoji?: string;
-  flag: string;
+  symbol_native: string;
+  countryName: string;
+  countryCode: string;
+  countryuse: string[];
+}
+interface CurrencyProps{
+  route:any;
+  navigation:any;
 }
 
-interface CurrencyPickerProps {
-  currencyInfo: CurrencyProps;
-  onPress: Function;
-}
-
-const CurrencyPickerScreen = () => {
-  const navigation = useNavigation();
-  const [searchKeyWord, setSearchKeyWord] = useState('');
-  const [currencies, setCurrencies] = useState(CurrencyData);
-
-  const handleSearch = (value: string) => {
-    setSearchKeyWord(value);
-    const filteredCurrency = CurrencyData.filter(
-      (currency: CurrencyProps) =>
-        currency.name.toLowerCase().includes(value.toLowerCase()) ||
-        currency.code.toLowerCase().includes(value.toLowerCase()),
-    );
-    setCurrencies(filteredCurrency);
-  };
-
-  const goBack = () => {
-    navigation.goBack();
-  };
-
-  return (
-    <View style={styles.container}>
+const CurrencyPickerScreen=({route,navigation}:any)=>{
+    const{currency,setCurrency}=route.params;
+    const [data, setData] = useState(currencys);
+    const [text,setText]=useState('');
+  useEffect(()=>{
+    let tempData = currencys.filter((item:CurrencyInfo) => {
+      return item.currencyCode.toLowerCase().indexOf(text.toLowerCase()) > -1||item.currencyName.toLowerCase().indexOf(text.toLowerCase()) > -1;
+    });
+    setData(tempData);
+  },[text]);
+  console.log(currency,"123456");
+  var listCurrency=data.concat();
+    data.forEach((item,index)=>{
+        if(item.currencyCode==currency){
+            let indexCurrency=index;
+            if(indexCurrency>-1){
+                listCurrency.splice(index,1);
+                listCurrency.unshift(item);
+            }
+            return;
+        }
+    })
+    return (
+      <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Select Currency</Text>
-        <TouchableOpacity onPress={() => goBack()}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
           <Icon name="close" size={26} color={appColors.black} />
         </TouchableOpacity>
       </View>
@@ -64,72 +60,46 @@ const CurrencyPickerScreen = () => {
           />
           <TextInput
             placeholder="Seach Currency"
-            value={searchKeyWord}
-            onChangeText={value => handleSearch(value)}
+            style={{color:'black'}}
+            value={text}
+            onChangeText={value => setText(value)}
           />
         </View>
-        {searchKeyWord ? (
+        {text ? (
           <Icon
             name="close"
             size={22}
             color={appColors.gray}
             style={{marginRight: 10}}
-            onPress={() => handleSearch('')}
+            onPress={() => setText('')}
           />
         ) : (
           ''
         )}
       </View>
-      <FlatList
-        data={currencies}
-        renderItem={({item}) => (
-          <CardItem currencyInfo={item} onPress={() => {}} />
-        )}
-        keyExtractor={item => item.code}
-      />
-    </View>
-  );
-};
+                <FlatList
+                    data={listCurrency}
+                    renderItem={({ item, index }) => (
+                        <TouchableOpacity
+                            key={index}
+                            style={styles.countryItem}
+                            onPress={() => { setCurrency(item.currencyCode); navigation.goBack(); }}
+                        >
+                            <View style={{ flexDirection: 'row' }}>
+                                <View style={{ width: 0.08 * width, height: 0.08 * width, overflow: "hidden", borderRadius: 0.4 * height, alignItems: 'center' }}>
+                                    <CountryFlag isoCode={item.countryCode} size={0.08 * width} />
+                                </View>
+                                <Text style={{ left: 0.02 * width, top: 0.01 * width,color:item.currencyCode==currency?'green':'black' }}>{item.currencyName}</Text>
+                                <Text style={{ right: 0.02 * width, top: 0.01 * width, position: 'absolute',color:item.currencyCode==currency?'green':'black' }}>{item.currencyCode}</Text>
+                            </View>
+                        </TouchableOpacity>
+                    )}
+                    keyExtractor={(item, index) => index.toString()}
+                    
+                />
 
-const CardItem = (props: CurrencyPickerProps) => {
-  const navigation = useNavigation();
-  const CurrencyInfo = props.currencyInfo;
-  const {setSourceCurrency, setTargetCurrency, isSourceCurrency} =
-    useCurrencyContext();
-  const handleSelectCurrency = () => {
-    if (isSourceCurrency) {
-      setSourceCurrency(CurrencyInfo);
-      navigation.goBack();
-    } else {
-      setTargetCurrency(CurrencyInfo);
-      navigation.goBack();
-    }
-  };
-
-  return (
-    <Pressable style={styles.cardItem} onPress={() => handleSelectCurrency()}>
-      <View
-        style={{
-          flex: 1,
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Text style={{color: appColors.black, fontSize: 24, marginStart: 8}}>
-            {CurrencyInfo.emoji}
-          </Text>
-          <Text style={{color: appColors.black, fontSize: 16, marginStart: 10}}>
-            {CurrencyInfo.code}
-          </Text>
-        </View>
-
-        <Text style={{color: appColors.black, fontSize: 16, marginStart: 6}}>
-          {CurrencyInfo.name}
-        </Text>
-      </View>
-    </Pressable>
-  );
+                </View>
+    );
 };
 
 export default CurrencyPickerScreen;
