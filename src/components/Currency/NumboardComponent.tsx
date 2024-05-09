@@ -75,14 +75,14 @@ const NumBoard:React.FC<NumBoardProps> = ({currency1,currency2,setCurrency1,setC
   return (
     <>
     {console.log(boardh)}
-    <View style={{ height:boardh,width:boardh*0.8,marginTop:0.08*width }}>
+    <View style={{ height:boardh,width:'100%',marginTop:0.08*width }}>
       {
         board.map((items, index) => (
-          <View key={index} style={{ justifyContent: 'center', alignItems: 'center', flex: 1,flexDirection:'row',height:0.8*boardh }}>
+          <View key={index} style={{ justifyContent: 'center', alignItems: 'center', flex: 1,flexDirection:'row' }}>
             {
               items.map((i, innerIndex) => (
-                <View key={innerIndex} style={{ justifyContent: 'center', alignItems: 'center', height: boardh*0.2, width: boardh*0.2 }}>
-                  <TouchableOpacity style={{ width: 0.18*boardh, height: 0.18*boardh,justifyContent:'center',alignItems:'center', backgroundColor:i[1],borderRadius:width*0.05 }}
+                <View key={innerIndex} style={{ justifyContent: 'center', alignItems: 'center', height: boardh*0.2, width: '25%' }}>
+                  <TouchableOpacity style={{ width: 0.205*width, height: 0.18*boardh,justifyContent:'center',alignItems:'center', backgroundColor:i[1],borderRadius:width*0.05 }}
                   onPress={()=>handleButton(i[0])}
                   >
                     {i[3]!=null?

@@ -1,4 +1,4 @@
-import {Dimensions, ScrollView, View} from 'react-native';
+import {Dimensions, ScrollView, View,ViewProps} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import styles from './MainScreen.style';
 import SwitchButton from '../../components/SwitchButton';
@@ -28,9 +28,9 @@ const MainScreen = () => {
 
   return (
     <View style={styles.container}>
-      <ScrollView
-        keyboardShouldPersistTaps="handled"
-        contentContainerStyle={[
+      <View
+        //keyboardShouldPersistTaps="handled"
+        style={[
           styles.scrollViewContent,
           {
             height: isKeyboardVisible
@@ -56,7 +56,7 @@ const MainScreen = () => {
             <SwitchButton somwidth={somwidth} setSomwidth={setSomwidth}/>
           </View>
         )}
-      </ScrollView>
+      </View>
     </View>
   );
 };

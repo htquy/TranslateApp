@@ -5,7 +5,9 @@ import styles from "./CurrencyPickerScreen.style";
 import CountryFlag from "react-native-country-flag";
 import Icon  from "react-native-vector-icons/MaterialIcons";
 import { appColors } from "../../constants/appColors";
-const {width,height}=Dimensions.get('window');
+import { appSize } from "../../constants/appSize";
+import { useRoute } from "@react-navigation/native";
+const {width,height}={width:appSize.sizes.WIDTH,height:appSize.sizes.HEIGHT}
 interface CurrencyInfo {
   currencyCode: string;
   currencyName: string;
@@ -20,8 +22,10 @@ interface CurrencyProps{
   navigation:any;
 }
 
-const CurrencyPickerScreen=({route,navigation}:any)=>{
-    const{currency,setCurrency}=route.params;
+const CurrencyPickerScreen=({navigation}:any)=>{
+  const route=useRoute();
+  const { currency, setCurrency } = route.params as { currency: string, setCurrency: React.Dispatch<React.SetStateAction<string>> };
+
     const [data, setData] = useState(currencys);
     const [text,setText]=useState('');
   useEffect(()=>{
@@ -77,27 +81,28 @@ const CurrencyPickerScreen=({route,navigation}:any)=>{
           ''
         )}
       </View>
-                <FlatList
-                    data={listCurrency}
-                    renderItem={({ item, index }) => (
-                        <TouchableOpacity
-                            key={index}
-                            style={styles.countryItem}
-                            onPress={() => { setCurrency(item.currencyCode); navigation.goBack(); }}
-                        >
-                            <View style={{ flexDirection: 'row' }}>
-                                <View style={{ width: 0.08 * width, height: 0.08 * width, overflow: "hidden", borderRadius: 0.4 * height, alignItems: 'center' }}>
-                                    <CountryFlag isoCode={item.countryCode} size={0.08 * width} />
-                                </View>
-                                <Text style={{ left: 0.02 * width, top: 0.01 * width,color:item.currencyCode==currency?'green':'black' }}>{item.currencyName}</Text>
-                                <Text style={{ right: 0.02 * width, top: 0.01 * width, position: 'absolute',color:item.currencyCode==currency?'green':'black' }}>{item.currencyCode}</Text>
-                            </View>
-                        </TouchableOpacity>
-                    )}
-                    keyExtractor={(item, index) => index.toString()}
-                    
-                />
-
+        <FlatList
+        data={listCurrency}
+        renderItem={({ item, index }) => (
+            <TouchableOpacity
+                key={index}
+                style={styles.countryItem}
+                onPress={() => { setCurrency(item.currencyCode); navigation.goBack(); }}
+            >
+                <View style={{ flexDirection: 'row' }}>
+                    <View style={{ width: 0.08 * width, height: 0.08 * width, overflow: "hidden", borderRadius: 0.4 * height, alignItems: 'center' }}>
+                        <CountryFlag isoCode={item.countryCode} size={0.08 * width} />
+                    </View>
+                    <Text style={{ left: 0.02 * width, top: 0.01 * width,color:item.currencyCode==currency?'green':'black' }}>{item.currencyName}</Text>
+                    <Text style={{ right: 0.02 * width, top: 0.01 * width, position: 'absolute',color:item.currencyCode==currency?'green':'black' }}>{item.currencyCode}</Text>
+                </View>
+            </TouchableOpacity>
+        )}
+        keyExtractor={(item, index) => index.toString()}
+        ItemSeparatorComponent={() => (
+            <View style={{ height: 1, backgroundColor: 'rgba(0, 0, 0, 0.05)' }} /> // Thay đổi độ trong suốt của màu sắc ở đây
+        )}
+    />
                 </View>
     );
 };

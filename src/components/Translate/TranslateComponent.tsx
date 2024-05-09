@@ -5,6 +5,7 @@ import LanguagePickerButton from './LanguagePickerButton';
 import {styles} from './Translate.Style';
 import {appColors} from '../../constants/appColors';
 import {useLanguageContext} from '../../context/LanguageContext';
+import Tts from "react-native-tts";
 import {
   ArrowImage,
   DocumentImage,
@@ -45,10 +46,12 @@ const TranslateComponent = ({navigation, isKeyboardVisible}: any) => {
   };
 
   const handleSwitchLanguage = () => {
+    let language=sourceLanguage.code;
     setSourceLanguage(targetLanguage);
     setTargetLanguage(sourceLanguage);
     setTextFromTranslate(textToTranslate);
     setTextToTranslate(textFromTranslate);
+    Tts.setDefaultLanguage(language);
   };
   const handleTranslate = async (text:string) => {
     console.log(text);
@@ -72,6 +75,10 @@ const TranslateComponent = ({navigation, isKeyboardVisible}: any) => {
     const response = await fetchApi();
   console.log(response);
   };
+  useEffect(()=>{
+    Tts.setDefaultEngine(targetLanguage.code);
+    Tts.setDefaultRate(0.5);
+  },[])
   useEffect(() => {
     const fetchData = async () => {
         await handleTranslate(textToTranslate);
@@ -79,7 +86,7 @@ const TranslateComponent = ({navigation, isKeyboardVisible}: any) => {
     fetchData();
   }, [textToTranslate,targetLanguage]);
   return (
-    <View style={{flex: 1, padding: 16}}>
+    <View style={{flex: 1, padding: 14}}>
       <View style={styles.languagePicker}>
         <LanguagePickerButton
           name={sourceLanguage.name}
@@ -148,7 +155,17 @@ const TranslateComponent = ({navigation, isKeyboardVisible}: any) => {
               multiline={true}
               textAlignVertical="top"
               editable={false}></TextInput>
+              <TouchableOpacity style={styles.deleteTextButton}>
+              <Icon
+                name="volume-up"
+                size={24}
+                color={appColors.gray}
+                style={{marginRight: 10}}
+                onPress={() => {Tts.speak(textFromTranslate);console.log("text:     ",textFromTranslate);}}
+              />
+            </TouchableOpacity>
           </View>
+          
         )}
       </View>
 
