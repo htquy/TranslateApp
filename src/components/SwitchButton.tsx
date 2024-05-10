@@ -3,7 +3,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import {CoinImage, TranslateImage} from '../assets/svgs';
 import {appColors} from '../constants/appColors';
 import {useFeatureContext} from '../context/FeatureContext';
-const {width,height}=Dimensions.get('window');
+import { appSize } from '../constants/appSize';
+const {width,height}={width:appSize.sizes.WIDTH,height:appSize.sizes.HEIGHT-appSize.sizes.UNSAFETOP}
 interface SwitchButton{
   somwidth:number,
   setSomwidth:Function
@@ -13,7 +14,7 @@ const SwitchButton:React.FC<SwitchButton> = ({somwidth,setSomwidth}) => {
   const {currentFeature, setCurrentFeature} = useFeatureContext();
   const animatedWidth2 = useRef(new Animated.Value(height*0.402-somwidth)).current;
   const animatedWidth1 = useRef(new Animated.Value(somwidth)).current;
-  console.log(somwidth);
+  console.log("some width===============================",somwidth/height);
   const toggleFeature = () => {
     if (currentFeature.id === 1) {
       setCurrentFeature({id: 2, title: 'Currency'});

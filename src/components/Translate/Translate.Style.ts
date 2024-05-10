@@ -33,6 +33,7 @@ export const styles = StyleSheet.create({
     fontSize: 24,
     color: appColors.black,
     height: '100%',
+    marginTop:20,
   },
   deleteTextButton: {
     position: 'absolute',

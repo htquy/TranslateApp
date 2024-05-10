@@ -1,4 +1,4 @@
-import {View, Text, TouchableOpacity, TextInput, Keyboard} from 'react-native';
+import {View, Text, TouchableOpacity, TextInput, Keyboard,ScrollView} from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import Clipboard from '@react-native-clipboard/clipboard';
 import LanguagePickerButton from './LanguagePickerButton';
@@ -137,24 +137,24 @@ const TranslateComponent = ({navigation, isKeyboardVisible}: any) => {
           <TouchableOpacity
             style={styles.pasteButton}
             onPress={() => pasteFromClipboard()}>
-            <DocumentImage color={appColors.black} width={24} height={24} />
-            <Text style={{color: appColors.sPrimary, marginStart: 8}}>
+            <DocumentImage color={appColors.black} width={15} height={15} />
+            {textToTranslate?'':<Text style={{color: appColors.sPrimary, marginStart: 8}}>
               Paste
-            </Text>
+            </Text>}
           </TouchableOpacity>
         </View>
         {textToTranslate && (
           <View style={styles.textArea}>
+            <ScrollView>
             <TextInput
               style={styles.text}
               value={textFromTranslate}
               ref={textInputRef}
-              // onChangeText={value => setTextToTranslate(value)}
-              //placeholder="Enter text..."
               placeholderTextColor={appColors.gray2}
               multiline={true}
               textAlignVertical="top"
               editable={false}></TextInput>
+              </ScrollView>
               <TouchableOpacity style={styles.deleteTextButton}>
               <Icon
                 name="volume-up"

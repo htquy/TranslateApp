@@ -1,4 +1,4 @@
-import { Text, View,StyleSheet, TouchableOpacity, Dimensions } from "react-native";
+import { Text, View,StyleSheet, TouchableOpacity, Dimensions,ScrollView } from "react-native";
 import CountryFlag from "react-native-country-flag";
 import currencys from '../../utils/JsonData/Currency.json'
 import NumBoard from "./NumboardComponent";
@@ -35,7 +35,9 @@ const CurrencyComponent=({navigation}:any)=>{
             <Text style={{fontSize:0.05*width,left:5,top:0.01*width}}>{currencyUnit1&&currencyUnit1.currencyCode}</Text>
             </TouchableOpacity>
             <View style={{flex:1,alignItems:'flex-end',marginRight:0.04*width}}>
+            <ScrollView horizontal={true}>
             <Text style={{fontSize:0.06*width,marginRight:0,color:appColors.gray}}>{result1}{currencyUnit1&&currencyUnit1.symbol}</Text>
+            </ScrollView>
             </View>
             </View>
             <View style={[styles.viewcurren,{backgroundColor:appColors.gray4,top:0.06*width}]}>
@@ -45,7 +47,9 @@ const CurrencyComponent=({navigation}:any)=>{
             <Text style={{fontSize:0.05*width,left:5,top:0.01*width}}>{currencyUnit2?.currencyCode}</Text>
             </TouchableOpacity>
             <View style={{flex:1,alignItems:'flex-end',marginRight:0.04*width}}>
+                <ScrollView horizontal={true}>
             <Text style={{fontSize:0.06*width,color:appColors.gray}}>{result2}{currencyUnit2?.symbol}</Text>
+            </ScrollView>
             </View>
             </View>
             <View style={{alignItems:'center'}}>

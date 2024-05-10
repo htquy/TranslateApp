@@ -1,6 +1,7 @@
 import {StyleSheet} from 'react-native';
 import {appColors} from '../../constants/appColors';
-
+import { appSize } from '../../constants/appSize';
+const {width,height}={width:appSize.sizes.WIDTH,height:appSize.sizes.HEIGHT-appSize.sizes.UNSAFETOP}
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -17,7 +18,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: appColors.black,
     fontWeight: 'bold',
-    marginTop: 32,
+    marginTop: appSize.sizes.UNSAFETOP,
   },
   searchInput: {
     borderWidth: 1,
@@ -28,6 +29,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 16,
     marginBottom: 16,
+    height:0.06*height
   },
   cardItem: {
     paddingVertical: 12,
