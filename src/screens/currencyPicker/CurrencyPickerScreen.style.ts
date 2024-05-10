@@ -1,7 +1,7 @@
-import {StyleSheet} from 'react-native';
+import {Dimensions, StyleSheet} from 'react-native';
 import {appColors} from '../../constants/appColors';
-import { appSize } from '../../constants/appSize';
-const {width,height}={width:appSize.sizes.WIDTH,height:appSize.sizes.HEIGHT-appSize.sizes.UNSAFETOP}
+
+const {width,height}=Dimensions.get('window')
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: appColors.black,
     fontWeight: 'bold',
-    marginTop: appSize.sizes.UNSAFETOP,
+    marginTop: 32,
   },
   searchInput: {
     borderWidth: 1,

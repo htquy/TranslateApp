@@ -8,11 +8,10 @@ const LauncherScreen = ({navigation}:any) => {
   const {currentFeature, setCurrentFeature,somwidth,setSomwidth} = useFeatureContext();
   const goToMain = (id: number,sizewidth:number) => {
     setSomwidth(height*sizewidth);
-    console.log("som width first: --------------------------------",height*sizewidth,"--------",sizewidth)
     if (id === 1) {
       setCurrentFeature({id: 1, title: 'Translate'});
     } else setCurrentFeature({id: 2, title: 'Currency'});
-    navigation.navigate('Main');  
+    navigation.navigate('Main');
   };
 
   return (

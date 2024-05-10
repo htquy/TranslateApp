@@ -3,6 +3,14 @@ import {appColors} from '../../constants/appColors';
 import {appSize} from '../../constants/appSize';
 const {width,height} ={width:appSize.sizes.WIDTH,height:appSize.sizes.HEIGHT-appSize.sizes.UNSAFETOP}
 export const styles = StyleSheet.create({
+  buttonhand:{
+    alignItems:'center',
+    backgroundColor:appColors.gray3,
+    height:80,
+    borderRadius:10,
+    width: 80,
+    bottom:10,
+  },
   languagePicker: {
     display: 'flex',
     flexDirection: 'row',
@@ -16,7 +24,7 @@ export const styles = StyleSheet.create({
   buttonLang: {
     justifyContent: 'center',
     alignItems: 'center',
-    height: 0.08*height,
+    height: 0.07*height,
     borderRadius: (width-52)*0.2,
     width: (width-52)*0.5,
   },
@@ -60,5 +68,13 @@ export const styles = StyleSheet.create({
   },
 
   voiceButton: {},
-  actionButton:{}
+  actionButton:{
+    alignItems:'center',
+    backgroundColor:appColors.gray3,
+    height:40,
+    borderRadius:20,
+    width: 40,
+    alignContent:'center',
+    
+    }
 });
